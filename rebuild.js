@@ -75,6 +75,23 @@ const renderNotes = function(notes, filters) {
             // Add it to the HTML at the end of the body section.
             document.querySelector('.notes').appendChild(newEl)
         })
+    } if (filters.hideRead) {
+        // Check if the notes have a value of true or false for the read property.
+        const readNotes = notes.filter(function (note) {
+            return note.read === filters.hideRead
+        })
+
+        // Clear the complete div of notes so that you don't see double notes after sorting them.
+        document.querySelector('.notes').innerHTML = ''
+
+        readNotes.forEach(function (note) {
+            // Create a new paragraph tag for each note.
+            let newEl = document.createElement('p')
+            // Set the text content of the paragraph to the title of the note.
+            newEl.textContent = note.title
+            // Add it to the HTML at the end of the body section.
+            document.querySelector('.notes').appendChild(newEl)
+        })
     } else {
         // TODO: 2. Display the notes on the screen.
 
@@ -100,7 +117,7 @@ document.querySelector('#sort-notes').addEventListener('change', function (e) {
     // Set the value of sortCompleted in the filters array equal to when the checkbox is checked.
     filters.sortCompleted = e.target.checked
 
-    // Call the sortNotes function with the new filter
+    // Call the renderNotes function with the new filter
     renderNotes(notes, filters)
 })
 
@@ -176,3 +193,15 @@ document.querySelector('#new-note').addEventListener('submit', function (e){
 })
 
 // TODO: 7. Hide read notes.
+// 1. Target the checkbox for hiding notes and add an eventListener.
+// 2. Store the value of the checked checkbox and set this to the hideRead property of the filters object.
+// 3. Rerender the notes.
+
+document.querySelector("#hide-notes").addEventListener('change', function (e){
+    
+    // Store the checked value in the hideRead property of the filters object.
+    filters.hideRead = e.target.checked
+
+    // Call the hideNotes function.
+    renderNotes(notes, filters)
+})
